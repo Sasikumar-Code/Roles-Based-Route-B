@@ -6,12 +6,11 @@ const jwt = require('jsonwebtoken');
 const User = require('../models/UserModel');
 const router = express.Router();
 
-// Register Route
 router.post('/register', async (req, res) => {
   const { username, email, password, role } = req.body;
 
   try {
-    // Check for existing user by username or email
+    
     const existingUser = await User.findOne({ $or: [{ username }, { email }] });
 
     if (existingUser) {
@@ -20,11 +19,11 @@ router.post('/register', async (req, res) => {
         .json({ message: 'Username or email already exists.' });
     }
 
-    // Hash the password
+   
     const salt = await bcrypt.genSalt(10);
     const hashedPassword = await bcrypt.hash(password, salt);
 
-    // Create a new user
+   
     const newUser = new User({
       username,
       email,
@@ -39,7 +38,7 @@ router.post('/register', async (req, res) => {
   }
 });
 
-// Login Route
+
 router.post('/login', async (req, res) => {
   const { email, password } = req.body;
 
